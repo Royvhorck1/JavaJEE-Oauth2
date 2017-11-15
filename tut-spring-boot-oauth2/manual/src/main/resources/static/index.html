@@ -21,7 +21,8 @@
 		</div>
 	</div>
 	<div class="container" ng-show="home.authenticated">
-		Logged in as: <span ng-bind="home.user"></span>
+            Logged in as: <span ng-bind="home.user"></span></br>
+            json object returned: {{home.json}}
 		<div>
 			<button ng-click="home.logout()" class="btn btn-primary">Logout</button>
 		</div>
@@ -37,6 +38,7 @@
 					var self = this;
 					$http.get("/user").success(function(data) {
 						self.user = data.userAuthentication.details.name;
+                                                self.json = data.userAuthentication.details;
 						self.authenticated = true;
 					}).error(function() {
 						self.user = "N/A";

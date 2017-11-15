@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -45,6 +46,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -59,15 +61,21 @@ import org.springframework.web.filter.CompositeFilter;
 @Order(6)
 public class SocialApplication extends WebSecurityConfigurerAdapter {
 
+    
+String email;
+    
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
-
-	@RequestMapping({ "/user", "/me" })
-	public Map<String, String> user(Principal principal) {
-		Map<String, String> map = new LinkedHashMap<>();
-		map.put("name", principal.getName());
-		return map;
-	}
+       	@RequestMapping({ "/user", "/me" })
+        public Map<String, String> user(Principal principal) {
+            if (principal != null) {
+                OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) principal;
+                Authentication authentication = oAuth2Authentication.getUserAuthentication();
+                Map<String, String> details = (Map<String, String>) authentication.getDetails();
+                return details;
+            }
+            return null;
+        }
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

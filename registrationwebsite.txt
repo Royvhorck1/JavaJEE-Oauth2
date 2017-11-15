@@ -1,0 +1,6 @@
+facebook: https://developers.facebook.com/
+spring on oauth: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-security.html
+
+reference to many sites that provide oauth services 
+
+https://github.com/sahat/satellizer#-login-with-oauth-20

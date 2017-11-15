@@ -19,10 +19,12 @@
 		With Facebook: <a href="/login">click here</a>
 	</div>
 	<div class="container" ng-show="home.authenticated">
-		Logged in as: <span ng-bind="home.user"></span>
+            Logged in as: <span ng-bind="home.user"></span></br>
+                details        {{home.details}} 
 		<div>
 			<button ng-click="home.logout()" class="btn btn-primary">Logout</button>
 		</div>
+                your profile picture:
 	</div>
 	<script type="text/javascript" src="/webjars/angularjs/angular.min.js"></script>
 	<script type="text/javascript">
@@ -35,7 +37,10 @@
 					var self = this;
 					$http.get("/user").success(function(data) {
 						self.user = data.userAuthentication.details.name;
+                                                // i added this
+                                                self.details = data.userAuthentication.details
 						self.authenticated = true;
+                                        $http.get("")
 					}).error(function() {
 						self.user = "N/A";
 						self.authenticated = false;

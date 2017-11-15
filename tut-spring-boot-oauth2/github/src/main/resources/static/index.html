@@ -24,7 +24,8 @@
 		</div>
 	</div>
 	<div class="container" ng-show="home.authenticated">
-		Logged in as: <span ng-bind="home.user"></span>
+            Logged in as: <span ng-bind="home.user"></span></br>
+                Data:{{home.info}}
 		<div>
 			<button ng-click="home.logout()" class="btn btn-primary">Logout</button>
 		</div>
@@ -40,8 +41,10 @@
 					var self = this;
 					$http.get("/user").success(function(data) {
 						if (data.name) {
+                                                    self.info = data;
 							self.user = data.name;
 							self.authenticated = true;
+                                                        self.getCountry();
 						} else {
 							self.user = "N/A";
 							self.authenticated = false;
@@ -59,6 +62,14 @@
 							self.authenticated = false;
 						});
 					};
+                                        self.getCountry = function(){
+                                            $http.get("/me/").success(function (data){
+                                              if(data.name){
+                                                  self.country = data.country;
+                                              }
+                                            });
+                                            
+                                        };
 				});
 	</script>
 </body>
